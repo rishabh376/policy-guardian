@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy-guardian
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: policy-guardian
+  template:
+    metadata:
+      labels:
+        app: policy-guardian
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/example/policy-guardian:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe: { httpGet: { path: /healthz, port: 8080 } }
+        readinessProbe: { httpGet: { path: /healthz, port: 8080 } }
